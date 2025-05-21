@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('global_stats', function (Blueprint $table) {
             $table->id();
-            $table->boolean("is_active")->default(1);
+            $table->string("election_name");
+            $table->boolean("is_active")->default(0);
             $table->integer("total_votes")->default(0);
             $table->timestamps();
         });

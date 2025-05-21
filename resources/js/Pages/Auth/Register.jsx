@@ -10,6 +10,7 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         student_id: '',
+        level: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -50,7 +51,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Student ID" />
+                    <InputLabel htmlFor="student_id" value="Student ID" />
 
                     <TextInput
                         id="student_id"
@@ -64,6 +65,23 @@ export default function Register() {
                     />
 
                     <InputError message={errors.student_id} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="level" value="level" />
+
+                    <TextInput
+                        id="level"
+                        type="text"
+                        name="level"
+                        value={data.level}
+                        className="mt-1 block w-full"
+                        autoComplete="userlevel"
+                        onChange={(e) => setData('level', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.level} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
@@ -118,7 +136,7 @@ export default function Register() {
 
                 <div className="flex items-center justify-end mt-4">
                     <Link
-                        href={route('login')}
+                        href={route('Home')}
                         className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                     >
                         Already registered?

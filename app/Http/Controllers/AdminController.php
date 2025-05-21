@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\GlobalStats;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Redirect;
+use Auth;
 
 class AdminController extends Controller
 {
@@ -21,7 +23,9 @@ class AdminController extends Controller
 
     public function loadusers()
     {
-        return response()->json(User::all());
+        $user = User::where('id', '!=', 1)->get();
+
+        return response()->json($user);
     }
 
     public function addNewUser()
@@ -69,5 +73,79 @@ class AdminController extends Controller
 
     public function loadcandidate(){
         return response()->json(Candidate::all());
+    }
+
+    // ✅ Toggle voting status
+    public function toggleUserVote($id)
+    {
+        $user = User::findOrFail($id);
+        $user->can_vote = !$user->can_vote;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Voting status updated.');
+    }
+
+    // ✅ Delete a voter
+    public function destroyVoter($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->back()->with('success', 'User deleted.');
+    }
+
+    // voting control
+    public function viewVoteControl(){
+        return Inertia::render('Admin/VotingControl', ['isAdmin' => true]);
+    }
+
+    public function loadglobalstats(){
+        return response()->json(GlobalStats::all());
+    }
+
+     public function activateNewVotingController(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // Create a new voting controller
+        $newController = GlobalStats::create([
+            'election_name' => $request->name,
+            'is_active' => false,
+            'total_votes' => 0,
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function toggleVoteCon($id){
+        $voteController = GlobalStats::findOrFail($id);
+        $voteController->is_active = !$voteController->is_active;
+        $voteController->save();
+
+        return redirect()->back()->with('success', 'Controller status updated.');
+    }
+
+    public function destroyVoteCon($id){
+        $voteController = GlobalStats::findOrFail($id);
+        $voteController->delete();
+
+        User::query()->update(['poll_room' => 0]);
+        Candidate::query()->delete();
+
+        return redirect()->back()->with('success', 'Voting Controller deleted.');
+    }
+
+    public function activateAllUserVote(){
+        User::query()->update(values: ['can_vote' => 1]);
+
+        return redirect()->back()->with('success', 'All Users Can Vote.');
+    }
+
+    public function deactivateAllUserVote(){
+        User::query()->update(values: ['can_vote' => 0]);
+
+        return redirect()->back()->with('success', 'All Users Disabled From Voting.');
     }
 }

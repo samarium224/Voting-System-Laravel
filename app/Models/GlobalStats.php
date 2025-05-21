@@ -10,6 +10,8 @@ class GlobalStats extends Model
     use HasFactory;
 
     protected $fillable = [
+        "election_name",
+        "is_active",
         "total_votes"
     ];
 }

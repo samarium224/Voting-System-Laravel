@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedInteger('student_id')->unique();
+            $table->integer('level')->default(4);
             $table->string('email')->unique()->nullable()->default(' ');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('poll_room')->nullable()->default(0);
             $table->boolean('can_vote')->default(1);
             $table->rememberToken();
             $table->timestamps();

@@ -22,14 +22,14 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 className="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
                             >
                                 Admin Log in
-                            </Link>
+                            </Link> */}
 
                             <Link
                                 href={route("register")}
                                 className="ms-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
                             >
                                 Register
-                            </Link> */}
+                            </Link>
                         </>
                     )}
                 </div>
@@ -47,7 +47,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         </svg>
                     </div>
                     <div className="lg:text-4xl md:text-3xl text-xl sm:text-xl uppercase text-center dark:text-slate-200 font-semibold py-4">
-                        BME Voting Portal
+                        MIC Voting Portal
                     </div>
                     {auth.user ? (
                         <div

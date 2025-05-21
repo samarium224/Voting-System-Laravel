@@ -34,13 +34,18 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'student_id' => 'required|integer|unique:users,student_id',
+            'level' => 'required|integer|regex:/^[1-4]$/',
             'email' => 'nullable|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'level.regex' => 'The level must be a single digit between 1 and 4',
         ]);
+
 
         $user = User::create([
             'name' => $request->name,
             'student_id' => $request->student_id,
+            'level' => $request->level,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

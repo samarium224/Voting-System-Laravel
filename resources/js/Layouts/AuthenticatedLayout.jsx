@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
@@ -8,6 +8,12 @@ import { Link } from "@inertiajs/react";
 export default function Authenticated({ user, isAdmin = 0, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    useEffect(() => {
+        Echo.channel('VoteStart').listen('PublicChannelEvent', (event) => {
+            console.log(event); // Or log it to the console
+        });
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -47,6 +53,14 @@ export default function Authenticated({ user, isAdmin = 0, header, children }) {
                                             )}
                                         >
                                             Register candidates
+                                        </NavLink>
+                                        <NavLink
+                                            href={route("control.vote")}
+                                            active={route().current(
+                                                "control.vote"
+                                            )}
+                                        >
+                                            Vote Control
                                         </NavLink>
                                     </>
                                 ) : (

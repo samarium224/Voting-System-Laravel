@@ -1,11 +1,20 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import DataTable from "./Admin/DataTable";
 import CreateVoter from "./Admin/CreateVoter";
 import CandidateDataTable from "./Admin/CandidateDataTable";
+import PrimaryButton from "@/Components/PrimaryButton";
+import DangerButton from "@/Components/DangerButton";
+import ButtonClick from "@/Components/ButtonClick";
+import VoterCard from "@/Components/VoterCard";
 
 export default function AdminPage({ auth }) {
     const { isAdmin } = usePage().props;
+
+    const handleVoteStart = () => {
+        router.post(route('vote.start'), { preserveScroll: true });
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -23,16 +32,24 @@ export default function AdminPage({ auth }) {
                     <div className="px-2 py-2 uppercase text-xl text-center text-gray-900 dark:text-gray-100">
                         welcome admin
                     </div>
+                    {/* <div className="container">
+                        <div className="px-2 pt-3 text-md text-left text-gray-900 dark:text-gray-100">
+                            Voting Management
+                        </div>
+                        <ButtonClick
+                            className="my-3"
+                            children={"start vote"}
+                            onClick={(event) => handleVoteStart()}
+                        />
+                    </div> */}
                     <div className="container">
                         <div className="px-2 pt-3 text-md text-left text-gray-900 dark:text-gray-100">
-                            currrent candidates
+                            Currrent Candidates
                         </div>
                         <CandidateDataTable />
                     </div>
                     <div className="container">
-                        <div className="px-2 pt-3 text-md text-left text-gray-900 dark:text-gray-100">
-                            currrent active users
-                        </div>
+                        
                         <DataTable />
                     </div>
                 </div>

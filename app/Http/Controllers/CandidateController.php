@@ -25,14 +25,31 @@ class CandidateController extends Controller
         if (Auth::user()->can_vote) {
 
             $candidate_id = $request->candidate;
+            $poll_room_id = Auth::user()->poll_room;
 
             Candidate::where("id", $candidate_id)->increment("got_votes", 1);
-            GlobalStats::where("id", 1)->increment("total_votes", 1);
+            GlobalStats::where("id", $poll_room_id)->increment("total_votes", 1);
             User::where("id", Auth::user()->id)->update(['can_vote' => 0]);
             return Redirect::route('poll.results');
         } else {
             return Redirect::route('poll.results');
         }
+    }
+
+    public function JoinRoom(Request $request)
+    {
+        $room_id = $request->id;
+
+        User::where("id", Auth::user()->id)->update(['poll_room' => $room_id]);
+        Inertia::render('Dashboard');
+
+    }
+
+    public function UserEndLoadGlobalStats()
+    {
+        return response()->json(
+            GlobalStats::select('id', 'election_name', 'is_active')->get()
+        );
     }
 
     public function loadResults()

@@ -1,6 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, usePage } from "@inertiajs/react";
-import CreateVoter from "./CreateVoter";
 import CreateCandidate from "./CreateCandidate";
 
 export default function AdminCreateCandidates({auth}) {
