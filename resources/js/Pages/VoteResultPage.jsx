@@ -1,10 +1,11 @@
+import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import VoteResult from "@/Components/VoteResult";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, usePage } from "@inertiajs/react";
 
 export default function VoteResultPage({ auth }) {
-    const { candidates_info, app_status } = usePage().props;
+    const { candidates_info, app_status, error } = usePage().props;
 
     return (
         <AuthenticatedLayout
@@ -23,7 +24,15 @@ export default function VoteResultPage({ auth }) {
                         Results
                     </div>
 
-                    <VoteResult candidates_info={candidates_info} totalvotes={app_status.total_votes}/>
+                    <InputError
+                        message={error}
+                        className="mt-2"
+                    />
+
+                    <VoteResult
+                        candidates_info={candidates_info}
+                        totalvotes={app_status.total_votes}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>

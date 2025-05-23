@@ -6,6 +6,7 @@ export default function VoterCard({
     name,
     email,
     student_id,
+    level,
     canvote,
     onDelete,
 }) {
@@ -51,6 +52,9 @@ export default function VoterCard({
                         </div>
                         <p className="text-md text-gray-700 dark:text-gray-300">
                             {student_id}
+                        </p>
+                        <p className="text-md text-gray-700 dark:text-gray-300">
+                            Level: {level}
                         </p>
                         <p
                             className="text-sm text-gray-700 dark:text-gray-300 sm:max-w-[150px] md:truncate"

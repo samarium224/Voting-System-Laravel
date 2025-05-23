@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\GlobalStats;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -34,13 +35,19 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'student_id' => 'required|integer|unique:users,student_id',
-            'level' => 'required|integer|regex:/^[1-4]$/',
-            'email' => 'nullable|string|lowercase|email|max:255|unique:'.User::class,
+            'level' => ['required', 'integer', 'regex:/^[1-4]$/'],
+            'email' => 'nullable|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
             'level.regex' => 'The level must be a single digit between 1 and 4',
         ]);
 
+        // If GlobalStats has data and user is NOT authenticated or not an admin
+        if (GlobalStats::exists() && (!Auth::check() || !Auth::user()->hasRole('administrator'))) {
+            return redirect()->route('register')->withErrors([
+                'registration' => 'Public registration is closed. Contact admin.',
+            ]);
+        }
 
         $user = User::create([
             'name' => $request->name,

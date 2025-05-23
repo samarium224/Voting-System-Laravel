@@ -14,7 +14,11 @@ export default function AdminCreateCandidates({ auth }) {
 
     // ✅ Remove deleted user from UI
     const DeleteVoteController = (voteControllerId) => {
-        setGlobaldata(globaldata.filter((globaldata) => globaldata.id !== voteControllerId));
+        setGlobaldata(
+            globaldata.filter(
+                (globaldata) => globaldata.id !== voteControllerId
+            )
+        );
     };
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -122,9 +126,53 @@ export default function AdminCreateCandidates({ auth }) {
                                         name={data.election_name}
                                         total_votes={data.total_votes}
                                         is_active={data.is_active}
-                                        onDelete = {DeleteVoteController}
+                                        onDelete={DeleteVoteController}
                                     />
                                 ))}
+
+                                <div>
+                                    <p className="text-center text-gray-600 dark:text-gray-300 mb-4">
+                                        create new voting controller
+                                    </p>
+                                    <form onSubmit={submit}>
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="name"
+                                                value="Election Name"
+                                            />
+
+                                            <TextInput
+                                                id="name"
+                                                name="name"
+                                                value={data.name}
+                                                className="mt-1 block w-full"
+                                                autoComplete="name"
+                                                isFocused={true}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "name",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                required
+                                            />
+
+                                            <InputError
+                                                message={errors.name}
+                                                className="mt-2"
+                                            />
+                                        </div>
+
+                                        <div className="flex items-center justify-end mt-4">
+                                            <PrimaryButton
+                                                className="ms-4"
+                                                disabled={processing}
+                                            >
+                                                Activate Voting Controller
+                                            </PrimaryButton>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         )}
                     </div>

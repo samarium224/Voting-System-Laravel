@@ -94,6 +94,7 @@ export default function DataTable() {
                         name={user.name}
                         email={user.email}
                         student_id={user.student_id}
+                        level = {user.level}
                         canvote={user.can_vote}
                         onDelete={handleDeleteUser}
                     />

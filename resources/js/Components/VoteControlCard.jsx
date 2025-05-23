@@ -30,7 +30,7 @@ function VoteControlCard({ id, name, total_votes, is_active, onDelete }) {
     };
 
     return (
-        <div className="flex justify-between items-center bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow">
+        <div className="flex justify-between items-center bg-gray-100 dark:bg-gray-900 border p-4 rounded-lg shadow">
             <div key={id}>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                     Controller Name:{" "}
@@ -54,7 +54,7 @@ function VoteControlCard({ id, name, total_votes, is_active, onDelete }) {
                     Status:{" "}
                     <span
                         className={`font-semibold ${
-                            isActive ? "text-green-600" : "text-red-600"
+                            isActive ? "text-green-600" : "text-red-500"
                         }`}
                     >
                         {isActive ? "Active" : "Inactive"}
@@ -66,6 +66,12 @@ function VoteControlCard({ id, name, total_votes, is_active, onDelete }) {
                     className="text-sm text-red-500 my-3 underline pt-1 cursor-pointer"
                 >
                     Delete Vote Controller
+                </p>
+
+                <p
+                    className="text-sm text-yellow-500 my-3 pt-1 cursor-pointer"
+                >
+                    Warning: Voting Controller is created and public registration has been turned off.
                 </p>
             </div>
 

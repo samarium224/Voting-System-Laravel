@@ -9,6 +9,7 @@ export default function CreateVoter() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         student_id: "",
+        level: "",
         email: "",
         password: "",
         password_confirmation: "",
@@ -68,6 +69,28 @@ export default function CreateVoter() {
 
                         <InputError
                             message={errors.student_id}
+                            className="mt-2"
+                        />
+                    </div>
+
+                    <div className="mt-4">
+                        <InputLabel htmlFor="level" value="Level" />
+
+                        <TextInput
+                            id="level"
+                            type="text"
+                            name="level"
+                            value={data.level}
+                            className="mt-1 block w-full"
+                            autoComplete="userid"
+                            onChange={(e) =>
+                                setData("level", e.target.value)
+                            }
+                            required
+                        />
+
+                        <InputError
+                            message={errors.level}
                             className="mt-2"
                         />
                     </div>

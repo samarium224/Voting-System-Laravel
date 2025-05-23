@@ -27,10 +27,17 @@ class CandidateController extends Controller
             $candidate_id = $request->candidate;
             $poll_room_id = Auth::user()->poll_room;
 
-            Candidate::where("id", $candidate_id)->increment("got_votes", 1);
-            GlobalStats::where("id", $poll_room_id)->increment("total_votes", 1);
+            $vote_active_status = GlobalStats::where('id', $poll_room_id)->value('is_active');
+
             User::where("id", Auth::user()->id)->update(['can_vote' => 0]);
-            return Redirect::route('poll.results');
+            if ($vote_active_status == false) {
+                return Redirect::route('poll.results', with(['error' => 'Voting has closed. Unfortunately, we are unable to count your vote.']));
+            } else {
+                Candidate::where("id", $candidate_id)->increment("got_votes", 1);
+                GlobalStats::where("id", $poll_room_id)->increment("total_votes", 1);
+
+                return Redirect::route('poll.results');
+            }
         } else {
             return Redirect::route('poll.results');
         }
@@ -52,8 +59,9 @@ class CandidateController extends Controller
         );
     }
 
-    public function loadResults()
+    public function loadResults(Request $request)
     {
+        $error = $request->error;
         $poll_state = GlobalStats::select("is_active")->first();
         $candidates = Candidate::orderBy('got_votes', 'desc')->get()->toArray();
         $status = GlobalStats::first()->toArray();
@@ -64,6 +72,7 @@ class CandidateController extends Controller
             return Inertia::render('VoteResultPage', [
                 'candidates_info' => $candidates,
                 'app_status' => $status,
+                'error' => $error,
             ]);
         }
     }
